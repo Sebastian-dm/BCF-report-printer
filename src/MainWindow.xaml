@@ -1,0 +1,81 @@
+﻿<Window x:Class="BCFReader.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="BCF Reader" Height="400" Width="300" Icon="Resources/BCFLogoSmall.png">
+    <Window.Resources>
+        <Style x:Key="ComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Height" Value="26" />
+            <Setter Property="DisplayMemberPath" Value="StyleName.Val"/>
+        </Style>
+        <Style x:Key="LabelStyle" TargetType="Label">
+            <Setter Property="Width" Value="100" />
+            <Setter Property="Height" Value="26" />
+
+        </Style>
+        <Style x:Key="DockPanelStyle" TargetType="DockPanel">
+            <Setter Property="Margin" Value="5" />
+        </Style>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Margin" Value="10,0,0,0" />
+            <Setter Property="Width" Value="60" />
+        </Style>
+    </Window.Resources>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="26" />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Vertical" Grid.Row="0">
+            <GroupBox Header="BCF File">
+                <StackPanel Orientation="Vertical">
+                    <DockPanel Style="{StaticResource DockPanelStyle}">
+                        <TextBlock Name="BCFTitle" Text="Select a BCF file to get started"/>
+                    </DockPanel>
+                    <DockPanel Style="{StaticResource DockPanelStyle}">
+                        <Button Name ="loadBCFButton" Content="..." Width="26" DockPanel.Dock="Right" Click="loadBCFButton_Click"/>
+                        <TextBox Name="BCFPathTextBox" Width="Auto" IsReadOnly="True"/>
+                    </DockPanel>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="Template">
+                <DockPanel Style="{StaticResource DockPanelStyle}">
+                    <Button Name ="loadTemplateButton" Content="..." Width="26" DockPanel.Dock="Right" Click="loadTemplateButton_Click"/>
+                    <TextBox Name="templatePathTextBox" Width="Auto" IsReadOnly="True"/>
+                </DockPanel>
+            </GroupBox>
+            <GroupBox Name="StylesGroupBox" Header="Styles" IsEnabled="False">
+                <StackPanel Orientation="Vertical" >
+                    <DockPanel Style="{StaticResource DockPanelStyle}">
+                        <Label Content="Title Style" Style="{StaticResource LabelStyle}"/>
+                        <ComboBox Name="titleStyleCombo" Style="{StaticResource ComboBoxStyle}"/>
+                    </DockPanel>
+                    <DockPanel Style="{StaticResource DockPanelStyle}">
+                        <Label Content="Date Style" Style="{StaticResource LabelStyle}"/>
+                        <ComboBox Name="dateStyleCombo" Style="{StaticResource ComboBoxStyle}"/>
+                    </DockPanel>
+                    <DockPanel Style="{StaticResource DockPanelStyle}">
+                        <Label Content="Content Style" Style="{StaticResource LabelStyle}"/>
+                        <ComboBox Name="contentStyleCombo" Style="{StaticResource ComboBoxStyle}"/>
+                    </DockPanel>
+                </StackPanel>
+            </GroupBox>
+            <Grid Height="18" Margin="0,10,0,0">
+                <ProgressBar Name="pbStatus" Visibility="Hidden"/>
+                <TextBlock
+                    Visibility="{Binding ElementName=pbStatus,Path=Visibility}"
+                    HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}({0} / {1})">
+                            <Binding Path="Value" ElementName="pbStatus"/>
+                            <Binding Path="Maximum" ElementName="pbStatus"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </Grid>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right">
+            <Button Content="Save" Style="{StaticResource ButtonStyle}" Click="SaveAsWordClick" />
+            <Button Content="Cancel" IsCancel="true" Style="{StaticResource ButtonStyle}" Click="Button_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
